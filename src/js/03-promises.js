@@ -40,11 +40,6 @@ function getFormValuesAndGetMessages(e) {
 function createPromise({ amount, delay, step }) {
   return setTimeout(() => {
     for (let i = 1; i <= amount; i += 1) {
-      if (i > amount) {
-        clearInterval(timerId);
-        return;
-      }
-
       let shouldResolve = Math.random() > 0.3;
 
       if (shouldResolve) {
