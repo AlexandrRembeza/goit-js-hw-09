@@ -16,43 +16,68 @@ function getFormValuesAndGetMessages(e) {
 
   e.currentTarget.reset();
 
-  createPromise(formValues)
-    .then(value => {
-      Notiflix.Notify.success(`${value}`, {
-        width: '400px',
-        position: 'right-top',
-        clickToClose: true,
-        svgSize: '120px',
-        fontSize: '18px',
-      });
-    })
-    .catch(value => {
-      Notiflix.Notify.failure(`${value}`, {
-        width: '400px',
-        position: 'right-top',
-        clickToClose: true,
-        svgSize: '120px',
-        fontSize: '18px',
-      });
-    });
+  createPromise(formValues);
+  // .then(value => {
+  //   Notiflix.Notify.success(`${value}`, {
+  //     width: '400px',
+  //     position: 'right-top',
+  //     clickToClose: true,
+  //     svgSize: '120px',
+  //     fontSize: '18px',
+  //   });
+  // })
+  // .catch(value => {
+  //   Notiflix.Notify.failure(`${value}`, {
+  //     width: '400px',
+  //     position: 'right-top',
+  //     clickToClose: true,
+  //     svgSize: '120px',
+  //     fontSize: '18px',
+  //   });
+  // });
 }
 
 function createPromise({ amount, delay, step }) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      timerId = setInterval(() => {
-        for (let i = 1; i <= amount; i += 1) {
-          let shouldResolve = Math.random() > 0.3;
+  return setTimeout(() => {
+    for (let i = 1; i <= amount; i += 1) {
+      if (i > amount) {
+        clearInterval(timerId);
+        return;
+      }
 
-          if (shouldResolve) {
-            resolve(`✅ Fulfilled promise ${i} in ${delay}ms`);
-          } else {
-            reject(`❌ Rejected promise ${i} in ${delay}ms`);
+      let shouldResolve = Math.random() > 0.3;
+
+      if (shouldResolve) {
+        Promise.resolve(`✅ Fulfilled promise ${i} in ${delay}ms`).then(
+          value => {
+            setTimeout(() => {
+              Notiflix.Notify.success(`${value}`, {
+                width: '400px',
+                position: 'right-top',
+                clickToClose: true,
+                svgSize: '120px',
+                fontSize: '18px',
+              });
+            }, step);
           }
+        );
+      } else {
+        Promise.reject(`❌ Rejected promise ${i} in ${delay}ms`).catch(
+          value => {
+            setTimeout(() => {
+              Notiflix.Notify.failure(`${value}`, {
+                width: '400px',
+                position: 'right-top',
+                clickToClose: true,
+                svgSize: '120px',
+                fontSize: '18px',
+              });
+            }, step);
+          }
+        );
+      }
 
-          delay += step;
-        }
-      }, step);
-    }, delay);
-  });
+      delay += step;
+    }
+  }, delay);
 }
