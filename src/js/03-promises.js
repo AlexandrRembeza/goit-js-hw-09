@@ -50,8 +50,7 @@ function createPromise({ amount, delay, step }) {
             reject(`❌ Rejected promise ${i} in ${delay}ms`);
           }
 
-          let newDelay = delay;
-          newDelay += delay;
+          delay += step;
         }
       }, step);
     }, delay);
