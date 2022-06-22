@@ -8,6 +8,13 @@ let timerId = null;
 
 function getFormValuesAndGetMessages(e) {
   e.preventDefault();
+  const {
+    elements: { amount, step, delay },
+  } = e.currentTarget;
+
+  if (amount.value < 0 || step.value < 0 || delay.value < 0) {
+    return alert(`Все числа должны быть больше нуля`);
+  }
 
   const formValues = {};
   const formData = new FormData(e.currentTarget);
