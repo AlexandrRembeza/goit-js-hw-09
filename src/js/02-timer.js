@@ -119,7 +119,17 @@ function stopTimer() {
 
       if (dateNow >= chosenDate) {
         refs.startButtonEL.disabled = 'true';
-        return setTimeout(() => alert('NO NO NO'), 200);
+        return setTimeout(
+          () =>
+            Notiflix.Notify.failure('Введите пожалуйста дату из будущего', {
+              width: '400px',
+              position: 'center-top',
+              clickToClose: true,
+              svgSize: '120px',
+              fontSize: '18px',
+            }),
+          200
+        );
       }
       refs.startButtonEL.removeAttribute('disabled');
     },
